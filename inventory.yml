@@ -1,0 +1,16 @@
+prod:
+  hosts:
+    prod-01:
+      ansible_host: site.uberlegenheit.ru
+      ansible_port: 2170
+
+dev:
+  hosts:
+    dev-01:
+      ansible_host: nesite.uberlegenheit.ru
+      ansible_port: 2180
+
+pigs:
+  children:
+    prod:
+    dev:
