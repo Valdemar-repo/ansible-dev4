@@ -1,2 +1,2 @@
----
-# tasks file for nginx
+- include_tasks: install.yml
+- include_tasks: certification.yml
