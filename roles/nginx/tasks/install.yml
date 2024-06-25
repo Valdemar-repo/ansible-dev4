@@ -5,32 +5,33 @@
 
 - name: Start nginx
   service:
-    name: 
-      - nginx
-      - certbot
+    name: '{{ item }}'
     state: started
     enabled: yes
+  loop:
+    - nginx
+    - certbot
 
 - name: copy nginx config
   when: configs != False
   copy:
-    src: {{ configs }}
+    src: '{{ configs }}'
     dest: /etc/nginx/
   notify: reload nginx
 
--name: disable default host
+- name: disable default host
   file:
     path: /etc/nginx/sites-enabled/default
     state: absent
   notify: reload nginx
 
 - name: vhost activation
-  file:
   when: vhosts != False
-    src: /etc/nginx/sites-available/{{ item }}
-    dest: /etc/nginx/sites-enabled/{{ item }}
+  file:
+    src: '/etc/nginx/sites-available/{{ item }}'
+    dest: '/etc/nginx/sites-enabled/{{ item }}'
     state: link
-  loop: {{ vhosts }}
+  loop: '{{ vhosts }}'
   notify: reload nginx
 
 - name: Flush handlers

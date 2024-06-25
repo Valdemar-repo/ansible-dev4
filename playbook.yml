@@ -27,9 +27,9 @@
 
   roles:
     - role: nginx
-      configs: '..host_files/configs/nginx.conf'
+      configs: 'host_files/configs/nginx.conf'
       ssl_renewal: True
-      ssl: 
+      ssl:
         - domain1.com
         - domain2.com
       vhosts:
