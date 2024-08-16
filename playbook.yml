@@ -6,6 +6,7 @@
 
   vars:
     server: "{{ inventory_hostname }}"
+    domain: "{{ ansible_host }}"
 
   vars_files:
     - "host_vars/{{ server }}.yml"
@@ -16,13 +17,14 @@
   
   - name: create content folder
     file:
-      path: /var/www/{{ server }}
+      path: /var/www/{{ domain }}
       mode: 0755
+      state: directory
 
   - name: copy site content
     copy:
-      src: ../host_files/index.nginx-debian.html
-      dest: /var/www/{{ server }}/index.nginx-debian.html
+      src: ./host_files/{{ domain }}.html
+      dest: /var/www/{{ domain }}/index.nginx-debian.html
       mode: 0755
 
   roles:
