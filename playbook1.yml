@@ -14,29 +14,7 @@
 
   tasks:
   
-  - name: create content folder
-    file:
-      path: /var/www/{{ server }}.{{region}}
-      mode: 0755
-      state: directory
-
-  - name: copy site content
-    copy:
-      src: ./host_files/{{ server }}.html
-      dest: /var/www/{{ server }}.{{region}}/index.nginx-debian.html
-      mode: 0755
-
   roles:
-    - role: nginx
-      configs: 'host_files/configs/nginx.conf'
-      ssl_renewal: True
-      ssl:
-        - domain1.com
-        - domain2.com
-      vhosts:
-        - uberlegenheit.ru
-        - biba.uberlegenheit.ru
-
     - role: users
       username: 'padavan'
       password: '$6$qs1.rWWivsLrxXeB$aBq2bZv6nudNJTcN/A4GnslFY94sAE1cbe7KqKU6lVRGU2IbpxDIXYE8fCzlr/HrxmZsVETKbgRueF5UyHBWP.'

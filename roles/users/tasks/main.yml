@@ -1,2 +1,44 @@
----
-# tasks file for users
+# - name: check user
+#   user:
+#     name: '{{ username }}'
+#     state: present
+#     shell: /bin/bash
+#   register: user_exists
+
+- name: check user
+  getent:
+    database: passwd
+    key: '{{ username }}'
+  ignore_errors: true
+  register: user_exists
+
+- name: configure user
+  when: user_exists.failed != True
+  block:
+
+    - name: change password
+      user:
+        name: '{{ username }}'
+        password: '{{ password }}'
+
+    - name: add in sudo
+      when: sudo == True
+      user: 
+        name: '{{ username }}'
+        groups: sudo
+        append: True
+
+    - name: add in sudoers
+      community.general.sudoers:
+        name: custom_sudo
+        state: present
+        user: '{{ username }}'
+        commands: '{{ sudoers }}'
+        nopassword: True
+      
+
+    - name: copy pub ssh key
+      ansible.posix.authorized_key:
+        user: '{{ username }}'
+        key: "{{ public_key }}"
+        state: present
