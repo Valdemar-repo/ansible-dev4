@@ -14,13 +14,11 @@
   loop:
     - nginx
     - certbot
+  ignore_errors: yes
 
-- name: copy nginx config
-  when: configs != False
-  copy:
-    src: '{{ configs }}'
-    dest: /etc/nginx/
-  notify: reload nginx
+- name: check certs
+  when: server in vhosts or server in ssl or ssl_renewal == True
+  include_tasks: check_cert.yml
 
 - name: Remove default site content and conf
   file:
@@ -31,58 +29,33 @@
     - '/etc/nginx/sites-enabled/default'
     - '/var/www/html'
 
-- name: check cert
-  stat:
-    path: /etc/letsencrypt/live/{{ domain }}/fullchain.pem
-  register: cert_exists
-
-- name: Set fact of SSL certificates
-  when: server in ssl
-  set_fact:
-    ssl_exist: "{{ cert_exists.stat.exists }}"
-
-- name: Copy site config
-  template:
-    src: site_conf.j2
-    dest: '/etc/nginx/sites-available/{{ domain }}'
-    mode: 0644
+- name: configure nginx
+  when: configs != False
+  include_tasks: configuration.yml
 
 - name: vhost activation
-  when: server in vhosts
-  file:
-    src: '/etc/nginx/sites-available/{{ item }}'
-    dest: '/etc/nginx/sites-enabled/{{ item }}'
-    state: link
-#  loop: '{{ vhosts }}'
-  notify: reload nginx
+  when: vhosts != False
+  include_tasks: vhost_activation.yml
+  loop: '{{ vhosts }}'
 
 - name: Flush handlers
   meta: flush_handlers
 
 - name: certs renewal
   when: ssl_renewal == True
-  shell: certbot renew --non-interactive
+  include_tasks: renew_cert.yml
 
-#{% for item in ssl %}
-
-# on in war machine
-# - name: renew cert
-#   tags: molecule-notest
-#   when: ssl_exist == False and ssl_renewal == True
-#   shell: 'certbot certonly --webroot --register-unsafely-without-email --agree-tos --non-interactive --webroot-path /var/www/{{ domain }} --domains {{ domain }}'
-#   notify: reload nginx
+- name: add cert
+  when: server in ssl
+  include_tasks: add_cert.yml
 
 - name: Flush handlers
   meta: flush_handlers
 
-#{% endfor %}
-
 - name: check renewal
   stat:
     path: /etc/cron.d/certbot
-  register: check_renewal
-  changed_when: False
-  
+  register: check_renewal  
 
 - name: auto renew SSL certificates by cron
   when: check_renewal.stat.exists == True

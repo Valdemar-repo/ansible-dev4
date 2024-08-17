@@ -1,0 +1,8 @@
+- name: check cert
+  stat:
+    path: /etc/letsencrypt/live/{{ server }}.{{region}}/fullchain.pem
+  register: cert_exists
+
+- name: Set fact of SSL certificates
+  set_fact:
+    ssl_exist: "{{ cert_exists.stat.exists }}"

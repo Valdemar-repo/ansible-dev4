@@ -1,0 +1,3 @@
+- name: certs renewal
+  when: ssl_renewal == True
+  shell: certbot renew --non-interactive

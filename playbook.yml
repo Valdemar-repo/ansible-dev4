@@ -6,7 +6,6 @@
 
   vars:
     server: "{{ inventory_hostname }}"
-    domain: "{{ ansible_host }}"
 
   vars_files:
     - "host_vars/{{ server }}.yml"
@@ -17,14 +16,14 @@
   
   - name: create content folder
     file:
-      path: /var/www/{{ domain }}
+      path: /var/www/{{ server }}.{{region}}
       mode: 0755
       state: directory
 
   - name: copy site content
     copy:
-      src: ./host_files/{{ domain }}.html
-      dest: /var/www/{{ domain }}/index.nginx-debian.html
+      src: ./host_files/{{ server }}.html
+      dest: /var/www/{{ server }}.{{region}}/index.nginx-debian.html
       mode: 0755
 
   roles:
@@ -35,5 +34,12 @@
         - domain1.com
         - domain2.com
       vhosts:
-        - uberlegenheit
+        - uberlegenheit.ru
         - biba.uberlegenheit.ru
+
+    - role: users
+      username: 'padavan'
+      password: 'my_parol'
+      sudo: 'yes'
+      sudoers: '/usr/bin/nano,/usr/bin/systemctl'
+      ssh_key: '{{ ssh_keys }}'

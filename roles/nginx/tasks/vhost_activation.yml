@@ -1,0 +1,12 @@
+- name: Copy site config
+  template:
+    src: site_conf.j2
+    dest: '/etc/nginx/sites-available/{{ item }}'
+    mode: 0644
+
+- name: vhost activation
+  file:
+    src: '/etc/nginx/sites-available/{{ item }}'
+    dest: '/etc/nginx/sites-enabled/{{ item }}'
+    state: link
+  notify: reload nginx
