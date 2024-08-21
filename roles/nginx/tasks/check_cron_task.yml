@@ -1,0 +1,10 @@
+- name: check renewal
+  stat:
+    path: /etc/cron.d/certbot
+  register: check_renewal  
+
+- name: auto renew SSL certificates by cron
+  when: check_renewal.stat.exists != True
+  copy:
+    src: certbot
+    dest: /etc/cron.d/certbot

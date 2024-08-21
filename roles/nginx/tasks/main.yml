@@ -17,8 +17,9 @@
   ignore_errors: yes
 
 - name: check certs
-  when: server in vhosts or server in ssl or ssl_renewal == True
+  when: vhosts != False
   include_tasks: check_cert.yml
+  loop: '{{ vhosts }}'
 
 - name: Remove default site content and conf
   file:
@@ -46,19 +47,12 @@
   include_tasks: renew_cert.yml
 
 - name: add cert
-  when: server in ssl
   include_tasks: add_cert.yml
+  loop: '{{ ssl }}'
 
 - name: Flush handlers
   meta: flush_handlers
 
-- name: check renewal
-  stat:
-    path: /etc/cron.d/certbot
-  register: check_renewal  
-
-- name: auto renew SSL certificates by cron
-  when: check_renewal.stat.exists == True
-  copy:
-    src: certbot
-    dest: /etc/cron.d/certbot
+- name: check cron task
+  when: ssl_renewal != False or ssl != False
+  include_tasks: check_cron_task.yml

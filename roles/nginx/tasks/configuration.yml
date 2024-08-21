@@ -1,10 +1,5 @@
 - name: copy nginx config
-  copy:
-    src: '{{ configs }}'
+  copy: 
+    src: '{{ configs }}/'
     dest: /etc/nginx/
   notify: reload nginx
-
-- name: Copy log_format
-  copy:
-    src: log_format.conf
-    dest: /etc/nginx/conf.d/log_format.conf

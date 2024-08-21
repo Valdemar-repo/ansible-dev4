@@ -1,6 +1,4 @@
 # - name: add cert
 #   tags: molecule-notest
-#   when: ssl_exist == False and ssl_renewal == True
 #   shell: 'certbot certonly --webroot --register-unsafely-without-email --agree-tos --non-interactive --webroot-path /var/www/{{ item }} --domains {{ item }}'
-#   loop: '{{ ssl }}'
 #   notify: reload nginx

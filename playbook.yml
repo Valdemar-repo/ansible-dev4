@@ -9,39 +9,35 @@
 
   vars_files:
     - "host_vars/{{ server }}.yml"
-    - secrets/common.vault
+    # - secrets/common.vault
     - host_vars/common.yml
 
-  tasks:
+  pre_tasks:
   
   - name: create content folder
     file:
-      path: /var/www/{{ server }}.{{region}}
+      path: /var/www/{{ item }}
       mode: 0755
       state: directory
+    loop: '{{ ssl_ }}'
 
   - name: copy site content
     copy:
-      src: ./host_files/{{ server }}.html
-      dest: /var/www/{{ server }}.{{region}}/index.nginx-debian.html
+      src: ./host_files/host_01.html
+      dest: /var/www/{{ item }}/index.nginx-debian.html
       mode: 0755
+    loop: '{{ ssl_ }}'
 
   roles:
     - role: nginx
-      configs: 'host_files/configs/nginx.conf'
-      ssl_renewal: True
-      ssl:
-        - domain1.com
-        - domain2.com
-      vhosts:
-        - uberlegenheit.ru
-        - biba.uberlegenheit.ru
+      configs: '{{ configs_ }}'
+      ssl_renewal: '{{ ssl_renewal_ }}'
+      ssl: '{{ ssl_ }}'
+      vhosts: '{{ vhosts_ }}'
 
     - role: users
-      username: 'padavan'
-      password: '$6$qs1.rWWivsLrxXeB$aBq2bZv6nudNJTcN/A4GnslFY94sAE1cbe7KqKU6lVRGU2IbpxDIXYE8fCzlr/HrxmZsVETKbgRueF5UyHBWP.'
-      sudo: True
-      sudoers: 
-        - '/usr/bin/nano'
-        - '/usr/bin/systemctl'
-      ssh_key: '{{ ssh_keys }}'
+      username: '{{ username_ }}'
+      password: '{{ password_ }}'
+      sudo: '{{ sudo_ }}'
+      sudoers: '{{ sudoers_ }}'
+      ssh_key: '{{ ssh_key_ }}'

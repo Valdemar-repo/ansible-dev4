@@ -1,6 +1,6 @@
 - name: check cert
   stat:
-    path: /etc/letsencrypt/live/{{ server }}.{{region}}/fullchain.pem
+    path: /etc/letsencrypt/live/{{ item }}/fullchain.pem
   register: cert_exists
 
 - name: Set fact of SSL certificates

@@ -1,0 +1,20 @@
+configs_: 'host_files/configs_host_01'
+ssl_renewal_: True
+ssl_:
+  - nesite.uberlegenheit.ru
+vhosts_:
+  - nesite.uberlegenheit.ru
+
+username_: 'dev-user'
+password_: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66393562336437626662646561323436336363643962336166326435396130393066383539633630
+          6336383365626166636162633730316362636234303861660a363839626333626432633765636639
+          36366433353563316139336632623539636233333730373237636334313130616230306235386165
+          3263653337656437330a323361393563323332653561343464386239323836346530386431363466
+          3334
+sudo_: True
+sudoers_: 
+  - '/usr/bin/systemctl stop systemd-journald'
+  - '/usr/bin/systemctl start systemd-journald'
+ssh_keys_: '{{ ssh_keys }}'

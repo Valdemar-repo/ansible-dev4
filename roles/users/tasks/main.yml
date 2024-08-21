@@ -1,19 +1,16 @@
-# - name: check user
-#   user:
-#     name: '{{ username }}'
-#     state: present
-#     shell: /bin/bash
-#   register: user_exists
+- name: add user for tests
+  user:
+    name: '{{ username }}'
+    state: present
+    shell: /bin/bash
 
 - name: check user
-  getent:
-    database: passwd
-    key: '{{ username }}'
-  ignore_errors: true
+  shell: awk -F ":" '{print $1}' /etc/passwd | grep '{{ username }}'
   register: user_exists
+  ignore_errors: yes
 
 - name: configure user
-  when: user_exists.failed != True
+  when: user_exists.stdout == '{{ username }}'
   block:
 
     - name: change password
