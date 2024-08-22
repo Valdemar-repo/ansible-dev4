@@ -47,6 +47,7 @@
   include_tasks: renew_cert.yml
 
 - name: add cert
+  when: cert_exists.stat.exists == False
   include_tasks: add_cert.yml
   loop: '{{ ssl }}'
 
@@ -56,3 +57,8 @@
 - name: check cron task
   when: ssl_renewal != False or ssl != False
   include_tasks: check_cron_task.yml
+
+- name: finaly reload nginx
+  service:
+    name: nginx
+    state: reloaded

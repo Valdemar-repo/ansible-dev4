@@ -2,20 +2,18 @@ server {
         listen 80;
         listen [::]:80;
         server_name {{item}};
-        return 301 https://{{item}};
+{% if cert_exists.stat.exists == True %}        return 301 https://{{item}};
 }
 
         server {
-        listen 443 {% if cert_exists.stat.exists == True %}ssl{% endif %};
-        listen [::]:443 {% if cert_exists.stat.exists == True %}ssl{% endif %};
-        server_name {{item}};
+        listen 443 ssl;
+        listen [::]:443 ssl;
+        server_name {{item}};{% endif %}
         root /var/www/{{item}};
         index index.html index.nginx-debian.html;
 
-{% if cert_exists.stat.exists == True %}
-        ssl_certificate /etc/letsencrypt/live/{{item}}/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/{{item}}/privkey.pem;
-{% endif %}
+{% if cert_exists.stat.exists == True %}        ssl_certificate /etc/letsencrypt/live/{{item}}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{item}}/privkey.pem;{% endif %}
 
         access_log /var/log/nginx/{{item}}_access.log short;
         error_log /var/log/nginx/{{item}}_error.log warn;

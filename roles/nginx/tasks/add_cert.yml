@@ -2,3 +2,9 @@
   tags: molecule-notest
   shell: 'certbot certonly --webroot --register-unsafely-without-email --agree-tos --non-interactive --webroot-path /var/www/{{ item }} --domains {{ item }}'
   notify: reload nginx
+
+- name: Copy site config
+  template:
+    src: site_conf.j2
+    dest: '/etc/nginx/sites-available/{{ item }}'
+    mode: 0644

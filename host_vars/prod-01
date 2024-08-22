@@ -1,9 +1,9 @@
 configs_: 'host_files/configs_host_01'
-ssl_renewal_: True
+ssl_renewal_: False
 ssl_:
-  - site.uberlegenheit.ru
+  - biba.uberdoghouse.ru
 vhosts_:
-  - site.uberlegenheit.ru
+  - biba.uberdoghouse.ru
 
 username_: 'prod-user'
 password_: !vault |

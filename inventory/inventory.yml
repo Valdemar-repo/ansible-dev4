@@ -1,15 +1,17 @@
 prod:
   hosts:
     prod-01:
-      ansible_host: site.uberlegenheit.ru
-      ansible_port: 2170
+      ansible_host: biba.uberdoghouse.ru
+      ansible_user: root
+      ansible_port: 22
       ansible_private_key_file: /root/.ssh/id_ed25519
 
 dev:
   hosts:
     dev-01:
-      ansible_host: nesite.uberlegenheit.ru
-      ansible_port: 2180
+      ansible_host: boba.uberdoghouse.ru
+      ansible_user: root
+      ansible_port: 22
       ansible_private_key_file: /root/.ssh/id_ed25519
 
 pigs:
