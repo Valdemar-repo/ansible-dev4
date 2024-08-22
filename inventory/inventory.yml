@@ -3,12 +3,14 @@ prod:
     prod-01:
       ansible_host: site.uberlegenheit.ru
       ansible_port: 2170
+      ansible_private_key_file: /root/.ssh/id_ed25519
 
 dev:
   hosts:
     dev-01:
       ansible_host: nesite.uberlegenheit.ru
       ansible_port: 2180
+      ansible_private_key_file: /root/.ssh/id_ed25519
 
 pigs:
   children:

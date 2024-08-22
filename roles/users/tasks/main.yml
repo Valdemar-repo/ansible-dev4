@@ -1,8 +1,8 @@
-- name: add user for tests
-  user:
-    name: '{{ username }}'
-    state: present
-    shell: /bin/bash
+# - name: add user for tests
+#   user:
+#     name: '{{ username }}'
+#     state: present
+#     shell: /bin/bash
 
 - name: check user
   shell: awk -F ":" '{print $1}' /etc/passwd | grep '{{ username }}'

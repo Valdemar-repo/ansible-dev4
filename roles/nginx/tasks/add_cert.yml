@@ -1,4 +1,4 @@
-# - name: add cert
-#   tags: molecule-notest
-#   shell: 'certbot certonly --webroot --register-unsafely-without-email --agree-tos --non-interactive --webroot-path /var/www/{{ item }} --domains {{ item }}'
-#   notify: reload nginx
+- name: add cert
+  tags: molecule-notest
+  shell: 'certbot certonly --webroot --register-unsafely-without-email --agree-tos --non-interactive --webroot-path /var/www/{{ item }} --domains {{ item }}'
+  notify: reload nginx
