@@ -43,7 +43,7 @@
   meta: flush_handlers
 
 - name: certs renewal
-  when: ssl_renewal == True
+  when: ssl_renewal != False
   include_tasks: renew_cert.yml
 
 - name: add cert

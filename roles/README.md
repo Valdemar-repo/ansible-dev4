@@ -2,6 +2,15 @@
 
 Role for installation and configuration nginx.
 
+## Step-by-Step
+
+- install nginx and certbot
+- remove default nginx host
+- copy nginx configs
+- renew ssl certificates
+- add ssl certs
+- activate vhosts
+
 ## Usage (example)
 
 ```yaml
@@ -18,12 +27,21 @@ Role for installation and configuration nginx.
 | -------- | -------- | -------- |
 | `configs` | `False` | Path from where nginx configs will be copied (conf.d, nginx.conf, etc.), leave False if you don’t want to copy them. |
 | `ssl_renewal` | `False` | Update existing ssl certificates? |
-| `ssl` | `no by default` | Which domains should you install SSL certificates on, example `domain1.com`. |
-| `vhosts` | `no by default` | Which virtual hosts need to be activated, example `domain1.com`. |
+| `ssl` | `False` | Which domains should you install SSL certificates on, example `domain1.com`. |
+| `vhosts` | `False` | Which virtual hosts need to be activated, example `domain1.com`. |
 
-# nginx
+# users
 
-Role for installation and configuration nginx.
+Role for configuration existing user.
+
+## Step-by-Step
+
+- check if user exist
+- change his password (optional)
+- add in sudo (optional)
+- add in sudoers (optional)
+- add ssh key (optional)
+
 
 ## Usage (example)
 
