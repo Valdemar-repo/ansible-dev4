@@ -14,6 +14,7 @@
   block:
 
     - name: change password
+      when: password != False
       user:
         name: '{{ username }}'
         password: '{{ password }}'
@@ -26,15 +27,16 @@
         append: True
 
     - name: add in sudoers
+      when: sudoers != False
       community.general.sudoers:
         name: custom_sudo
         state: present
         user: '{{ username }}'
         commands: '{{ sudoers }}'
         nopassword: True
-      
 
     - name: copy pub ssh key
+      when: ssh_key != False
       ansible.posix.authorized_key:
         user: '{{ username }}'
         key: "{{ public_key }}"
