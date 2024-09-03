@@ -1,4 +1,5 @@
 password: False
 sudo: False
-sudoers: False
+sudoers:
+  - False
 ssh_key: False

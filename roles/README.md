@@ -15,10 +15,12 @@ Role for installation and configuration nginx.
 
 ```yaml
     - role: nginx
-      configs: '{{ configs_ }}'
-      ssl_renewal: '{{ ssl_renewal_ }}'
-      ssl: '{{ ssl_ }}'
-      vhosts: '{{ vhosts_ }}'
+      configs: 'host_files/configs_host_01'
+      ssl_renewal: False
+      ssl:
+        - boba.uberdoghouse.ru
+      vhosts:
+        - boba.uberdoghouse.ru
 ```
 
 ## Available parameters
@@ -27,8 +29,8 @@ Role for installation and configuration nginx.
 | -------- | -------- | -------- |
 | `configs` | `False` | Path from where nginx configs will be copied (conf.d, nginx.conf, etc.), leave False if you don’t want to copy them. |
 | `ssl_renewal` | `False` | Update existing ssl certificates? |
-| `ssl` | `False` | Which domains should you install SSL certificates on, example `domain1.com`. |
-| `vhosts` | `False` | Which virtual hosts need to be activated, example `domain1.com`. |
+| `ssl` | `False` | Gets list, which domains should you install SSL certificates on, example `domain1.com`. |
+| `vhosts` | `False` | Gets list, which virtual hosts need to be activated, example `domain1.com`. |
 
 # users
 
@@ -47,11 +49,19 @@ Role for configuration existing user.
 
 ```yaml
     - role: users
-      username: '{{ username_ }}'
-      password: '{{ password_ }}'
-      sudo: '{{ sudo_ }}'
-      sudoers: '{{ sudoers_ }}'
-      ssh_key: '{{ ssh_key_ }}'
+      username: 'dev-user'
+      password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          38343139323638626266356363616232323832653963643132623161353331333635613435343665
+          3230343138633730373063313264353838386239323833380a643164633562356539616232353534
+          31313536346437626436383766323134653664303938366632383933623234373936643836383534
+          3663353539333337390a636465616633356338613631613331313532656161336264303430656166
+          6530
+      sudo: True
+      sudoers: 
+        - '/usr/bin/systemctl stop systemd-journald'
+        - '/usr/bin/systemctl start systemd-journald'
+      ssh_keys: '{{ ssh_keys }}'
 ```
 
 ## Available parameters
@@ -61,5 +71,5 @@ Role for configuration existing user.
 | `username` | `no by default` | User to check which to do the rest of the actions. |
 | `password` | `False` | Password to which you need to change the user password. |
 | `sudo` | `False` | Add in group sudo? |
-| `sudoers` | `False` | What command add in sudoers? example `'/usr/bin/nano'` |
+| `sudoers` | `False` | Gets list, what command add in sudoers? example `'/usr/bin/nano'` |
 | `ssh_key` | `False` | Your pub ssh key to login by ssh. |
