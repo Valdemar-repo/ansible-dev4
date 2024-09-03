@@ -39,5 +39,5 @@
       when: ssh_key != False
       ansible.posix.authorized_key:
         user: '{{ username }}'
-        key: "{{ public_key }}"
+        key: "{{ ssh_keys }}"
         state: present

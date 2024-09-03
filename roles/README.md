@@ -61,7 +61,7 @@ Role for configuration existing user.
       sudoers: 
         - '/usr/bin/systemctl stop systemd-journald'
         - '/usr/bin/systemctl start systemd-journald'
-      ssh_keys: '{{ ssh_keys }}'
+      ssh_keys: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFgWsNtteONXmQ3Hj1XA5wFvGHnpDHMrA6iZD7LhNxHx'
 ```
 
 ## Available parameters

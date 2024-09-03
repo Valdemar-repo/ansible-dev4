@@ -17,4 +17,4 @@ sudo_: True
 sudoers_: 
   - '/usr/bin/systemctl stop systemd-journald'
   - '/usr/bin/systemctl start systemd-journald'
-ssh_keys_: '{{ ssh_keys }}'
+ssh_keys_: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFgWsNtteONXmQ3Hj1XA5wFvGHnpDHMrA6iZD7LhNxHx'
